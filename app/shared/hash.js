@@ -83,12 +83,14 @@ exports.sha1 = function(string) {
 	}
 
 	/*
-	 * Convert a raw string to a base-64 string
+	 * Convert a raw string to a base-64 string. Note this is not a true base 64 encoding
+	 * we use . instead of + 
+	 * we use ~ instead of 
 	 */
 	function rstr2b64(input)
 	{
 	  try { b64pad } catch(e) { b64pad=''; }
-	  var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+	  var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.~";
 	  var output = "";
 	  var len = input.length;
 	  for(var i = 0; i < len; i += 3)
