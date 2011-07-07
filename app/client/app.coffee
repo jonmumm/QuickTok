@@ -9,6 +9,9 @@ exports.init = ->
 
   # Make a call to the server to retrieve a message
   SS.server.app.init window.location.pathname, (response) ->
-    console.log response
+    if response?
+      # NO SESSION HERE, LOAD THIS FORM
+    else
+      # SESSION IS HERE, LOAD CHAT STUFF
     
 
