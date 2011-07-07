@@ -7,8 +7,6 @@
 # Note: The default configuration will probably change a lot in the future. Be warned!
 
 exports.call = (request, response, next) ->
-
-    console.log request.url
       
     # Custom Middleware
     # -----------------

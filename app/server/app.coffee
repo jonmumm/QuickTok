@@ -2,5 +2,10 @@
 
 exports.actions =
   
-  init: (cb) ->
-    cb "SocketStream version #{SS.version} is up and running. This message was sent over websockets, so everything is working OK."
+  init: (path, cb) ->
+    console.log path
+    
+    cb 'do something'
+    
+    
+  
