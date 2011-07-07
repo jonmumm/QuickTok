@@ -9,5 +9,6 @@ exports.init = ->
 
   # Make a call to the server to retrieve a message
   SS.server.app.init window.location.pathname, (response) ->
+    console.log response
     
 
