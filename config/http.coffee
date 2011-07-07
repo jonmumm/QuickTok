@@ -8,6 +8,8 @@
 
 exports.call = (request, response, next) ->
 
+    console.log request.url
+      
     # Custom Middleware
     # -----------------
    
@@ -15,7 +17,6 @@ exports.call = (request, response, next) ->
     # See README for more details and example middleware code
    
     # require('my_middleware').call request, response, next
- 
 
     # Unless you're passing the callback to custom middleware, you'll need to call next() here 
     next()
