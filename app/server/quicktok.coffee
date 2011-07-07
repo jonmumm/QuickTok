@@ -1,19 +1,14 @@
-exports.actions = 
+exports.actions =
   
-  new: (id, cb) ->
+  new: (cb) ->
     
-    console.log 'Hello world'
-    
-    chat = 
-      id: id
-      name: "My name"
-      
-    R.set "chat:#{id}", JSON.stringify(chat)
-    
-    R.get "chat:#{id}", (err, data) =>
-      chat = JSON.parse(data)
-      console.log chat
-      
-    SS.publish.broadcast 'newChat', chat  
-      
-    cb chat
+    console.log 'Generating a new random url'
+    cb urlmapper((((1+Math.random())*0x10000)|0).toString(16)) 
+
+
+
+urlmapper =  (str) ->
+  hash = SS.shared.hash.sha1(str)
+  res = hash.substring(0,5)
+  console.log "Hash #{str} calculates to #{res}"
+  return res
