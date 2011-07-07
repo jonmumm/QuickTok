@@ -9,4 +9,3 @@ exports.actions =
       
   token: (cb) ->
     cb ot.generateToken()
-	
