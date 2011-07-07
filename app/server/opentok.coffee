@@ -5,7 +5,8 @@ exports.actions =
 
   session: (cb) ->
     ot.createSession 'localhost', {}, (session) ->
-      cb session.sessionID
+      cb session.sessionId
       
   token: (cb) ->
     cb ot.generateToken()
+	
