@@ -9,9 +9,15 @@ exports.init = ->
 
   # Make a call to the server to retrieve a message
   SS.server.app.init window.location.pathname, (response) ->
+    console.log response
     if response?
-      # NO SESSION HERE, LOAD THIS FORM
+      SS.client.chat.init(response)
+      $("#chat-wrapper").show('fast')
     else
-      # SESSION IS HERE, LOAD CHAT STUFF
+      SS.client.landing.init()
+      $("#landing-wrapper").show('fast')
+      
+
+      
     
 
