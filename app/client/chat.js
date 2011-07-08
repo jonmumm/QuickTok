@@ -120,9 +120,9 @@ var EmbedApp = function(data) {
 	var that = {};
 	
 	var otdata = {};
-	otdata.sid = data.sessionId;
-	otdata.token = data.token;
-	otdata.apikey = data.apiKey;
+	otdata.sid = "28757622dbf26a5a7599c2d21323765662f1d436";
+	otdata.token = "devtoken";
+	otdata.apikey = "413302";
 	
 	var stage = {};  // display area
 	var ele = {};  // view elements

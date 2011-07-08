@@ -1,4 +1,9 @@
-exports.sha1 = function(string) {
+exports.create = function() {	
+	var full_hash = sha1((((1+Math.random())*0x10000)|0).toString(16));
+	return full_hash.substring(0, 5);
+}
+
+sha1 = function(string) {
 	/*
 	 * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
 	 * in FIPS 180-1
