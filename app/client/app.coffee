@@ -5,6 +5,7 @@ $(document).ready =>
   qtok.hash = SS.shared.hash.create()
   
   $("#link-input").text(document.location.href + qtok.hash)
+  $("#success-url span").text(document.location.href + qtok.hash)
 
 # This method is called automatically when the websocket connection is established. Do not rename/delete
 exports.init = ->
@@ -45,7 +46,8 @@ exports.init = ->
         path: '/assets/ZeroClipboard.swf'
         copy: $("#link-input").text()
         afterCopy: =>
-          # Move to other state          
+          $("#links-wrapper").fadeOut 'fast', ->
+            $("#copied-wrapper").fadeIn('fast')
       )
       
 
