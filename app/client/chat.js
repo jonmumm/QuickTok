@@ -24,7 +24,6 @@ function log(str) {
 
 
 
-
 // main app
 var EmbedApp = function(data) {
 	var that = {};
@@ -40,6 +39,7 @@ var EmbedApp = function(data) {
 	var stage = {};  // display area
 	var ele = {};  // view elements
 	var session;  // opentok session
+	var view = {};
 	
 	var publisher;
 	
@@ -54,8 +54,8 @@ var EmbedApp = function(data) {
 			var subscriberBox = ele.subscriberBox;
 			var Width = loinfo.containerWidth;
 			var Height = loinfo.containerHeight;
-			var padding = 20;
-			var vid_ratio = 198 / 264;
+			var spadding = 30;
+			var vid_ratio = (198 + spadding) / (264 + spadding);
 			// Find ideal ratio
 			var count = subscriberBox.children.length;
 			var min_diff;
@@ -107,8 +107,11 @@ var EmbedApp = function(data) {
 				parent.style.left = x + "px";
 				parent.style.top = y + "px";
 
-				child.width = targetWidth;
-				child.height = targetHeight;
+				child.width = targetWidth - 2*spadding;
+				child.height = targetHeight - 2*spadding;
+				child.style.position = "relative";
+				child.style.top = spadding.toString() + "px";
+				child.style.left = spadding.toString() + "px";
 
 				parent.style.width = targetWidth + "px";
 				parent.style.height = targetHeight + "px";
@@ -122,9 +125,11 @@ var EmbedApp = function(data) {
 			div.setAttribute("id", id);
 			container.appendChild(div);
 			ele.subscriberBox.appendChild(container);
+			that.layout();
 		};
 		that.removeSubContainer = function(subContainer) {
 			subContainer.parentNode.removeChild(subContainer);
+			that.layout();
 		};
 		
 		that.layout = function() {
@@ -142,6 +147,8 @@ var EmbedApp = function(data) {
 			ele.subscriberBox.style.height = lo.containerHeight.toString() + "px";
 			ele.subscriberBox.style.top = lo.containerTop.toString() + "px";
 			ele.subscriberBox.style.left = lo.containerLeft.toString() + "px";
+			// publisher
+			// ele.publisherContainer.style.top = (((lo.containerHeight - $(ele.publisherContainer).height()) / 2)).toString() + "px";
 			
 			adamLayout( lo );
 		}
@@ -158,7 +165,20 @@ var EmbedApp = function(data) {
 	}();
 
 	
-	
+	var removeEle = function(ele) {
+		ele.parentNode.removeChild(ele);
+	};
+	var addEle = function(eleid, par) {
+		var div = document.createElement("div");
+		div.setAttribute("id", eleid);
+		par.appendChild(div);		
+	};
+	view.showJoinCTA = function() {
+		$(ele.joinCTA).show();
+	};
+	view.hideJoinCTA = function() {
+		$(ele.joinCTA).hide();
+	};
 	
 	
 	
@@ -183,19 +203,35 @@ var EmbedApp = function(data) {
 		div.setAttribute("id", "publisher");
 		ele.publisherContainer.appendChild(div);
 		
-		publisher = session.publish("publisher", {width:200, height:200, name: ""});
+		publisher = session.publish("publisher", {width:210, height:130, name: ""});
 		publisher.addEventListener("echoCancellationModeChanged", onEchoCancellationModeChangedHandler);
 		publisher.addEventListener("accessDenied", onAccessDenied);
+		publisher.addEventListener("accessAllowed", onAccessAllowed);
+		
+		view.hideJoinCTA();
+		
+		layoutManager.layout();
 	}
 	
 	function unpublish() {
 		if (session) {
 			session.unpublish( publisher );
+			view.showJoinCTA();
+			layoutManager.layout();
 		}
 	}
 	
 	function onAccessDenied (event) {
 		unpublish();
+	}
+	function onAccessAllowed (event) {
+		if (publisher){
+			var pubele = document.getElementById(publisher.id);
+			pubele.style.width = "260px";
+			pubele.style.height = "200px";
+			pubele.style.marginLeft = "20px";
+			pubele.style.marginTop = "0px";
+		}
 	}
 	
 	function onEchoCancellationModeChangedHandler (event) {
@@ -267,14 +303,39 @@ var EmbedApp = function(data) {
 		session.connect(otdata.apikey, otdata.token);
 	}
 	
+	var initUi = function() {
+		ele.joinCTA.onclick = function(e) {
+			publish();
+			return false;
+		};
+		ele.shareFbBtn.onclick = function(e){
+			var title = "Come chat was us!";
+			var shareurl = "http://www.facebook.com/sharer.php?s=100&p[title]=" + encodeURIComponent( title ) + "&p[url]=" + encodeURIComponent( document.URL ) + "&p[summary]=";
+			window.open(shareurl, "facebook", "width=550,height=500,left=500,top=100,resizable=1");
+		};
+		ele.shareTwBtn.onclick = function(e){
+			status = "Come chat was us!";
+			var shareurl = 'http://twitter.com/intent/tweet?text=' + encodeURIComponent(status) + "&url=" + encodeURIComponent(document.URL);
+			window.open(shareurl, "twitter", "width=550,height=345,left=500,top=100,resizable=1");
+		};
+		
+		ele.displayCurrUrl.innerHTML = document.URL;
+	};
+	
 	that.init = function(){
 		// swf elements
 		ele.headerWrapper = document.getElementById("header-wrapper");
 		ele.chat = document.getElementById("chat");
 		ele.subscriberBox = document.getElementById("subscriberBox");
 		ele.publisherContainer = document.getElementById("publisherContainer");
+		ele.joinCTA = document.getElementById("joinCTA");
+		ele.displayCurrUrl = document.getElementById("displayCurrUrl");
+		ele.shareFbBtn = document.getElementById("shareFbBtn");
+		ele.shareTwBtn = document.getElementById("shareTwBtn");
 		
 		
+		//ui event handlers
+		initUi();
 
 		// LayoutContainer.init("subscriberBox", stage.width - constants.PUBLISHER_COLUMN_WIDTH, stage.height);
 		layoutManager.init();
