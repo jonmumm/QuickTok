@@ -33,7 +33,18 @@ exports.actions =
   # This function reserves a video chat room for the given hash.
   #
   # You can can call this function with a hash to actually reserve your video chat. 
-  # The hash passed in should be obtained by calling the new function. 
+  # The hash passed in should be obtained by calling the new function.  
+  #
+  # Errors will be returned in the status field of the return json object. Anything
+  # besides "OK" indicates an error.
+  #
+  # Common errors:
+  #   * "ERROR: Hash is not a pseudo base64 of length 5"
+  #      You didn't pass in a hash that was obtained by calling the new function.
+  #      This is a fatal error, this url will never work.
+  #   *  "WARNING: Video session already reserved"
+  #      Somebody (possibly you) already called reserve with the given hash.
+  #      The video chat has already been reserved. (This is not a fatal error)
   #
   # Example usage:
   #
@@ -47,6 +58,20 @@ exports.actions =
   #    "hash":"ETH9d",
   #    "status": "OK"
   #  }
+  #
+  # Error sample:
+  #
+  # curl http://qtok.me/api/quicktok/reserve?ETH9d
+  #
+  # Response:
+  #
+  #
+  #  {
+  #    "url": "http://qtok.me/ETH9d",
+  #    "hash":"ETH9d",
+  #    "status": "WARNING: Video session already reserved"
+  #  }
+  #
   reserve: (hash, cb) ->
     # Now we are creating a session    
 
@@ -59,7 +84,9 @@ exports.actions =
     R.exists "hash:#{hash}", (err, data) ->
       if data is 1
         params =
-          status: "ERROR: Video session already reserved"
+          url: "http://qtok.me/#{hash}"
+          hash: hash
+          status: "WARNING: Video session already reserved"
         cb params
       else
         SS.server.opentok.session (response) ->
