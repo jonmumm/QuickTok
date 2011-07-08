@@ -150,8 +150,8 @@ var EmbedApp = function(data) {
 			var topPadding = 110;
 			var lo = {};
 			lo.containerHeight = stage.height - topPadding;
-			lo.containerWidth = Math.min(stage.width - constants.PUBLISHER_COLUMN_WIDTH, lo.containerHeight) - 20;
-			lo.containerWidth = stage.width - constants.PUBLISHER_COLUMN_WIDTH - 20;
+			lo.containerWidth = Math.min(stage.width - constants.PUBLISHER_COLUMN_WIDTH, lo.containerHeight*3) - 20;
+			// lo.containerWidth = stage.width - constants.PUBLISHER_COLUMN_WIDTH - 20;
 			lo.containerTop = topPadding;
 			lo.containerLeft = $(ele.publisherContainer).width() + 10;
 			// subscriber container
