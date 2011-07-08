@@ -36,7 +36,10 @@ exports.init = ->
       $("#help-link").click ->
         $("#api-wrapper").hide('fast')
         $("#landing-wrapper").show('fast')
-        $("#help-wrapper").show('fast')
+        $("#help-wrapper").fadeIn('fast')
+        setTimeout ->
+          $("#help-wrapper").fadeOut('fast')
+        , 2000
       
       $("#just-copy-button").zclip(
         path: '/assets/ZeroClipboard.swf'
