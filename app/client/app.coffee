@@ -3,7 +3,7 @@ window.qtok = {}
 
 $(document).ready =>  
   qtok.hash = SS.shared.hash.create()
-  $("#link-input").val(document.location.href + qtok.hash) 
+  $("#link-input").text(document.location.href + qtok.hash) 
   
   $("#link-input").click ->
     $("#link-input").select();
