@@ -3,39 +3,64 @@ html(lang="en")
   head
     != SocketStream
     title QuickTok
-  script(src="http://staging.tokbox.com/v0.91/js/TB.min.js")
-  script(src="/assets/jquery.zclip.min.js")
+    link(href='http://fonts.googleapis.com/css?family=Lato:100,100italic,light,lightitalic,regular,regularitalic,bold,bolditalic,900,900italic&v1', rel='stylesheet', type='text/css')
+    script(src="http://staging.tokbox.com/v0.91/js/TB.min.js")
+    script(src="/assets/jquery.zclip.min.js")
   body
-    #header-wrapper
+    #header-wrapper.section-wrapper
       #header
         #brand-wrapper
           #brand
-            h1#logo QuickTok
-            h2#tagline We are awesome.
+            div#logo
         #nav-wrapper
           ul#nav
-            li Home
+            li.selected Video Chat
             li API
             li Help
     #landing-wrapper
-      #main
-        #links-wrapper
-          #links
-            #share-link-wrapper
-              #share-link
-                input#link-input(type='text')
-                button#copy-join-button(name='copy-join-button') Copy & Join
-            #copy-link-wrapper
-              #copy-link
-                button#copy-button Copy
-    #chat-wrapper
+      #landing
+        #tiles
+          #links-wrapper
+            #links
+              #share-link-wrapper
+                #share-link
+                  p Your video chat URL
+                  #input-box
+                    #link-input-wrapper
+                      #link-input
+                    a#copy-join-button Copy & Join
+                    span free
+              #just-copy-wrapper
+                #just-copy or 
+                  span#just-copy-button just copy
+                  | , I'll start it later
+        #description-wrapper.section-wrapper
+          #description
+            p#tagline QuickTok is a free, instant, sharable, video chat service.
+            ul#features
+              li 
+                span No download
+              li 
+                span No signup
+              li 
+                span Silly simple
+              li 
+                span It's completely free!
+        #footer-wrapper.section-wrapper
+          #footer
+            img(src='/images/tb-logo.png')
+            p brought to you by
+    #chat-wrapper.section-wrapper
       #chat
         #leftSide
+          img#imgLogo(src="/images/qt-logo.png")
           #publisherContainer
             a#joinCTA(href='#') Join the conversation!
           #shareBox
             #shareBoxTitle Invite your friends
-              #displayCurrUrl
+              #displayUrlBox
+                #displayCurrUrl
+                button#displayCurrUrlBtn copy
               #shareBtnBox
                 #shareFbBtn FB
                 #shareTwBtn TW
