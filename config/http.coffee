@@ -17,5 +17,7 @@ exports.call = (request, response, next) ->
     # require('my_middleware').call request, response, next
 
     # Unless you're passing the callback to custom middleware, you'll need to call next() here 
+
+    console.log "Here is the request object #{request}" 
     next()
    

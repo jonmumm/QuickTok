@@ -1,5 +1,4 @@
-exports.init = () ->
-  console.log 'landing'
-  
+exports.init = () -> 
+      
   SS.server.quicktok.new (response) ->
-    $("#link-input").val(response.url)
+    console.log 'textset'

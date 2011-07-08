@@ -1,8 +1,17 @@
 # Client-side Code
+window.qtok = {}
 
-# Bind to events
-SS.socket.on 'disconnect', ->  $('#message').text('SocketStream server is down :-(')
-SS.socket.on 'connect', ->     $('#message').text('SocketStream server is up :-)')
+$(document).ready =>
+  
+  $("#copy-join-button").zclip(
+    path: '/assets/ZeroClipboard.swf'
+    copy: 'asdfasdfasdfas'
+  )
+  
+  
+  
+  qtok.hash = SS.shared.hash.create()
+  $("#link-input").val(document.location.href + qtok.hash)
 
 # This method is called automatically when the websocket connection is established. Do not rename/delete
 exports.init = ->

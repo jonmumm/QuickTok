@@ -4,7 +4,7 @@ html(lang="en")
     != SocketStream
     title QuickTok
   script(src="http://staging.tokbox.com/v0.91/js/TB.min.js")
-    
+  script(src="/assets/jquery.zclip.min.js")
   body
     #header-wrapper
       #header
@@ -24,10 +24,10 @@ html(lang="en")
             #share-link-wrapper
               #share-link
                 input#link-input(type='text')
-                button Copy & Join
+                button#copy-join-button(name='copy-join-button') Copy & Join
             #copy-link-wrapper
               #copy-link
-                button Copy
+                button#copy-button Copy
     #chat-wrapper
       #chat
         #publisherContainer
