@@ -47,15 +47,15 @@
 	text-indent -9999px
 	background url('/images/submit-btn.png') no-repeat
 
-#copy-join-button:hover
+#copy-join-button:hover, #copy-join-button.hover
 	background-position 0px -86px
 	cursor pointer
 
-#copy-join-button:active
+#copy-join-button:active, #copy-join-button.active
 	background-position 0px -172px
 	
-#copy-join-button .starting
-	background-position 0px -238px
+#copy-join-button.started
+	background-position 0px -258px
 
 #share-link-wrapper
 	margin-left 84px
@@ -89,14 +89,26 @@
 #just-copy-wrapper
 	clear both
 	color white
+	font-weight 300
+	text-shadow 0 -1px 0 black
+	padding-top 10px
+	padding-right 40px
+	text-align right
 	
 #just-copy-button
-	color #69b6e5
+	color #79c4f2
+	
+#just-copy-button:hover
+	cursor pointer
+	text-decoration underline
 	
 #features
 	margin-top 10px
 	font-size 20px
 	list-style-type disc
+
+#help
+	font-family swanky
 
 #features li
 	color #61818c
@@ -125,3 +137,21 @@
 
 #footer img
 	float right
+	
+#help-wrapper
+	position relative
+	
+#help
+	position absolute
+	z-index 30
+	top 120px
+	right 40px
+	background green
+
+#arrow
+	position absolute
+	top 0px
+	right 0px
+	width 131px
+	height 200px
+	background url('/images/arrow.png')

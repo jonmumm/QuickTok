@@ -3,24 +3,8 @@ window.qtok = {}
 
 $(document).ready =>  
   qtok.hash = SS.shared.hash.create()
-  $("#link-input").text(document.location.href + qtok.hash) 
   
-  $("#link-input").click ->
-    $("#link-input").select();
-  
-  $("#copy-button").zclip(
-    path: '/assets/ZeroClipboard.swf'
-    copy: $("#link-input").val()
-    afterCopy: =>
-      $("#copy-button").text "Copied"
-  )
-  
-  $("#copy-join-button").zclip(
-    path: '/assets/ZeroClipboard.swf'
-    copy: $("#link-input").val()
-    afterCopy: =>
-      console.log 'hi'
-  )
+  $("#link-input").text(document.location.href + qtok.hash)
 
 # This method is called automatically when the websocket connection is established. Do not rename/delete
 exports.init = ->
@@ -30,10 +14,46 @@ exports.init = ->
     console.log response
     if response?
       SS.client.chat.init(response)
-      $("#chat-wrapper").show('fast')
+      $("#chat-wrapper").fadeIn('fast')
+      
+      $("#displayCurrUrlBtn").zclip(
+        path: '/assets/ZeroClipboard.swf'
+        copy: $("#displayCurrUrl").text()      
+      )
     else
       SS.client.landing.init()
-      $("#landing-wrapper").show('fast')
+      $("#header-wrapper").fadeIn('fast')
+      $("#landing-wrapper").fadeIn('fast')
+      
+      $("#api-link").click ->
+        $("#landing-wrapper").hide('fast')
+        $("#api-wrapper").show('fast')
+        
+      $("#videochat-link").click ->
+        $("#api-wrapper").hide('fast')
+        $("#landing-wrapper").show('fast')
+        
+      $("#help-link").click ->
+        $("#api-wrapper").hide('fast')
+        $("#landing-wrapper").show('fast')
+        $("#help-wrapper").show('fast')
+      
+      $("#just-copy-button").zclip(
+        path: '/assets/ZeroClipboard.swf'
+        copy: $("#link-input").text()
+        afterCopy: =>
+          # Move to other state          
+      )
+      
+
+      $("#copy-join-button").zclip(
+        path: '/assets/ZeroClipboard.swf'
+        copy: $("#link-input").text()
+        afterCopy: =>
+          $("#copy-join-button").css('background-position', '0px -258px')
+          SS.server.quicktok.reserve qtok.hash, (response) =>
+            window.location = document.location.href + response.hash
+      )
       
 
       

@@ -4,9 +4,15 @@ html(lang="en")
     != SocketStream
     title QuickTok
     link(href='http://fonts.googleapis.com/css?family=Lato:100,100italic,light,lightitalic,regular,regularitalic,bold,bolditalic,900,900italic&v1', rel='stylesheet', type='text/css')
+    link(href='http://fonts.googleapis.com/css?family=Swanky+and+Moo+Moo&v1', rel='stylesheets', type='text/css')
     script(src="http://staging.tokbox.com/v0.91/js/TB.min.js")
     script(src="/assets/jquery.zclip.min.js")
+    link(href="/assets/reveal.css")
+    script(src="/assets/jquery.reveal.js")
   body
+    #help-wrapper.section-wrapper
+      #help Press the button, stupid.
+        #arrow
     #header-wrapper.section-wrapper
       #header
         #brand-wrapper
@@ -14,9 +20,9 @@ html(lang="en")
             div#logo
         #nav-wrapper
           ul#nav
-            li.selected Video Chat
-            li API
-            li Help
+            li#videochat-link.selected Video Chat
+            li#api-link API
+            li#help-link Help
     #landing-wrapper
       #landing
         #tiles
@@ -32,7 +38,7 @@ html(lang="en")
                     span free
               #just-copy-wrapper
                 #just-copy or 
-                  span#just-copy-button just copy
+                  a#just-copy-button just copy
                   | , I'll start it later
         #description-wrapper.section-wrapper
           #description
@@ -65,4 +71,18 @@ html(lang="en")
                 #shareFbBtn FB
                 #shareTwBtn TW
         #subscriberBox
+    #api-wrapper.section-wrapper
+      div
+        p This functions creates a unique hash that can be used to reserve a new chatroom.
+        p You can call this function to generate a short unique url and hash that can be used to reserve a quicktok video conversation.
+        p Calling this function will only generate the unique hash and the url where you can find this chat. However it will not reserve the video conference yet.
+        p Example usage:
+        p curl http://qtok.me/api/quicktok/new
+        p Response:
+        p
+          | {
+          |    "url": "http://qtok.me/ETH9d",
+          |    "hash":"ETH9d",
+          |    "status": "OK"
+          |  }
         
