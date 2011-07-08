@@ -11,19 +11,21 @@ exports.actions =
     cb params
 
   reserve: (hash, cb) ->
-    # Now we are creating a session
-    hashlen = hash.length
-    
-    if hashlen is 5
+    # Now we are creating a session    
+    if hash.length is 5
       SS.server.opentok.session (response) -> 
         R.set "hash:#{hash}", response
         params =
           url: "http://qtok.me/#{hash}"
           hash: hash
+          
+        cb params
     else 
       params = 
           error : "Hash is not base64 of length 5"
-    cb params
+          
+      cb params
+    
       
   get: (hash, cb) ->
     R.get "hash:#{hash}", (err, data) ->
