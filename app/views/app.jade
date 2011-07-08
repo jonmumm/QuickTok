@@ -59,7 +59,8 @@ html(lang="en")
     #chat-wrapper.section-wrapper
       #chat
         #leftSide
-          img#imgLogo(src="/images/qt-logo.png")
+          #imgContainer
+            img#imgLogo(src="/images/qt-logo.png")
           #publisherContainer
             a#joinCTA(href='#') Join the conversation!
           #shareBox
@@ -68,8 +69,9 @@ html(lang="en")
                 #displayCurrUrl
                 button#displayCurrUrlBtn copy
               #shareBtnBox
-                #shareFbBtn FB
-                #shareTwBtn TW
+                #shareFbBtn
+                #shareTwBtn
+          #emptyBottomLeftGarbage
         #subscriberBox
     #api-wrapper.section-wrapper
       div
