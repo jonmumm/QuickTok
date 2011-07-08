@@ -53,11 +53,14 @@ html(lang="en")
     #chat-wrapper.section-wrapper
       #chat
         #leftSide
+          img#imgLogo(src="/images/qt-logo.png")
           #publisherContainer
             a#joinCTA(href='#') Join the conversation!
           #shareBox
             #shareBoxTitle Invite your friends
-              #displayCurrUrl
+              #displayUrlBox
+                #displayCurrUrl
+                button#displayCurrUrlBtn copy
               #shareBtnBox
                 #shareFbBtn FB
                 #shareTwBtn TW

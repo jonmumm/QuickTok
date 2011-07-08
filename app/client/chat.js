@@ -135,12 +135,12 @@ var EmbedApp = function(data) {
 		that.layout = function() {
 			// get window viewport dimensions
 			stage.width = jQuery(window).width();
-			stage.height = jQuery(window).height() - $(ele.headerWrapper).height();
+			stage.height = jQuery(window).height();
 			// calcs
 			var lo = {};
 			lo.containerWidth = stage.width - constants.PUBLISHER_COLUMN_WIDTH;
 			lo.containerHeight = stage.height;
-			lo.containerTop = $(ele.headerWrapper).height();
+			lo.containerTop = 0;
 			lo.containerLeft = $(ele.publisherContainer).width();
 			// subscriber container
 			ele.subscriberBox.style.width = lo.containerWidth.toString() + "px";
@@ -203,7 +203,7 @@ var EmbedApp = function(data) {
 		div.setAttribute("id", "publisher");
 		ele.publisherContainer.appendChild(div);
 		
-		publisher = session.publish("publisher", {width:210, height:130, name: ""});
+		publisher = session.publish("publisher", {width:230, height:160, name: ""});
 		publisher.addEventListener("echoCancellationModeChanged", onEchoCancellationModeChangedHandler);
 		publisher.addEventListener("accessDenied", onAccessDenied);
 		publisher.addEventListener("accessAllowed", onAccessAllowed);
@@ -227,10 +227,10 @@ var EmbedApp = function(data) {
 	function onAccessAllowed (event) {
 		if (publisher){
 			var pubele = document.getElementById(publisher.id);
-			pubele.style.width = "260px";
-			pubele.style.height = "200px";
-			pubele.style.marginLeft = "20px";
-			pubele.style.marginTop = "0px";
+			pubele.style.width = "230px";
+			pubele.style.height = "160px";
+			pubele.style.marginLeft = "25px";
+			pubele.style.marginTop = "35px";
 		}
 	}
 	
