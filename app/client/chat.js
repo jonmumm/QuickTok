@@ -54,7 +54,7 @@ var EmbedApp = function(data) {
 			var subscriberBox = ele.subscriberBox;
 			var Width = loinfo.containerWidth;
 			var Height = loinfo.containerHeight;
-			var spadding = 30;
+			var spadding = 10;
 			var vid_ratio = (198 + spadding) / (264 + spadding);
 			// Find ideal ratio
 			var count = subscriberBox.children.length;
@@ -73,6 +73,16 @@ var EmbedApp = function(data) {
 					targetRows = rows;
 				}
 			};
+			// re calc target rows and cols
+			targetRows = Math.ceil(Math.sqrt(count / ((Width/Height)/(1/vid_ratio)) - 1));
+			targetCols = Math.ceil(count / targetRows);
+			log("----------");
+			log(targetRows);
+			log(targetCols);
+			log(count);
+			log(Width/Height);
+			log(1/vid_ratio);
+			
 			var videos_ratio = (targetRows/targetCols) * vid_ratio;
 			if (videos_ratio > availableRatio) {
 				targetHeight = Math.floor( Height/targetRows );
@@ -137,11 +147,13 @@ var EmbedApp = function(data) {
 			stage.width = jQuery(window).width();
 			stage.height = jQuery(window).height();
 			// calcs
+			var topPadding = 110;
 			var lo = {};
-			lo.containerWidth = stage.width - constants.PUBLISHER_COLUMN_WIDTH;
-			lo.containerHeight = stage.height;
-			lo.containerTop = 0;
-			lo.containerLeft = $(ele.publisherContainer).width();
+			lo.containerHeight = stage.height - topPadding;
+			// lo.containerWidth = Math.min(stage.width - constants.PUBLISHER_COLUMN_WIDTH, lo.containerHeight) - 20;
+			lo.containerWidth = stage.width - constants.PUBLISHER_COLUMN_WIDTH - 20;
+			lo.containerTop = topPadding;
+			lo.containerLeft = $(ele.publisherContainer).width() + 10;
 			// subscriber container
 			ele.subscriberBox.style.width = lo.containerWidth.toString() + "px";
 			ele.subscriberBox.style.height = lo.containerHeight.toString() + "px";
