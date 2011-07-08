@@ -2,14 +2,16 @@ html, body
 	height 100%
 	overflow hidden
 	color #fff
+	background-color #171e20
+	background-image none !important
 	
 #chat-wrapper
 	display none
 	background-color #eeeeee
 
 #imgLogo
-	width 240px
-	margin-left 20px
+	width 220px
+	margin-left 25px
 	padding 20px 0px
 
 #chat
@@ -24,8 +26,14 @@ html, body
 	height 100%
 	width 280px
 	left 0px
-	border-right solid 2px #cccccc
-	
+	border-right solid 2px #000
+	background-image url('/images/bg.png')
+	background-repeat repeat
+
+#leftSide > div
+	border-top solid 1px #444
+	border-bottom solid 1px #000
+
 #publisherContainer
 	height 230px
 	
@@ -34,7 +42,8 @@ html, body
 	margin-top 35px
 		
 #shareBox
-	border-top solid 1px #cccccc
+	padding 25px
+	text-align center
 	
 a#joinCTA	
 	display none
@@ -48,12 +57,13 @@ a#joinCTA
 	
 #displayCurrUrl
 	float left
-	border solid 1px #eeeeee
+	border solid 1px #000
 	height 30px
 	line-height 30px
-	width 180px
+	width 170px
 	border solid 1px #bbb
 	border-right 0px
+	font-size 12px
 
 #displayCurrUrlBtn
 	float left
@@ -61,14 +71,44 @@ a#joinCTA
 	background-color #ff0000
 	height 32px
 	border solid 1px #bbb
-	
-#shareBox
-	padding 20px
 
 #shareBtnBox
 	margin-top 10px
+	overflow hidden
+	margin-left 65px
 	
 
 #shareBtnBox > div
 	float left
+
+#shareFbBtn
+	cursor pointer
+	background-image url('/images/sm-icon_facebook.png')
+	width 48px
+	height 40px
+	border-right solid 1px #000
+	
+#shareFbBtn:hover
+	background-position 0 -40px
+
+#shareTwBtn
+	cursor pointer
+	background-image url('/images/sm-icon_twitter.png')
+	width 48px
+	height 40px
+	border-left solid 1px #444
+
+#shareTwBtn:hover
+	background-position 0 -40px
+
+#emptyBottomLeftGarbage
+	border-bottom 0px !important
+	
+	
+	
+	
+	
+	
+	
+	
 	

@@ -74,14 +74,15 @@ var EmbedApp = function(data) {
 				}
 			};
 			// re calc target rows and cols
-			targetRows = Math.ceil(Math.sqrt(count / ((Width/Height)/(1/vid_ratio)) - 1));
-			targetCols = Math.ceil(count / targetRows);
-			log("----------");
-			log(targetRows);
-			log(targetCols);
-			log(count);
-			log(Width/Height);
-			log(1/vid_ratio);
+			// targetRows = Math.min(Math.ceil(Math.sqrt(count / ((Width/Height)/(1/vid_ratio))) - 1), count);
+			// targetCols = Math.ceil(count / targetRows);
+			// log("----------");
+			// log(count / ((Width/Height)/(1/vid_ratio)));
+			// log(targetRows);
+			// log(targetCols);
+			// log(count);
+			// log(Width/Height);
+			// log(1/vid_ratio);
 			
 			var videos_ratio = (targetRows/targetCols) * vid_ratio;
 			if (videos_ratio > availableRatio) {
@@ -97,7 +98,7 @@ var EmbedApp = function(data) {
 			var lastRowIndex = (targetRows - 1) * targetCols;
 
 			var firstRowMarginTop = ((Height - (targetRows * targetHeight)) / 2);
-			var firstColMarginLeft = ((Width - (targetCols * targetWidth)) / 2);
+			var firstColMarginLeft = 0;
 
 			var x = 0;
 			var y = 0;
@@ -105,7 +106,6 @@ var EmbedApp = function(data) {
 				if (i % targetCols == 0) {
 					// We are the first element of the row
 					x = firstColMarginLeft;
-					if (i == lastRowIndex) x += lastRowMargin;
 					y += i == 0 ? firstRowMarginTop : targetHeight;
 				} else {
 					x += targetWidth;
@@ -150,7 +150,7 @@ var EmbedApp = function(data) {
 			var topPadding = 110;
 			var lo = {};
 			lo.containerHeight = stage.height - topPadding;
-			// lo.containerWidth = Math.min(stage.width - constants.PUBLISHER_COLUMN_WIDTH, lo.containerHeight) - 20;
+			lo.containerWidth = Math.min(stage.width - constants.PUBLISHER_COLUMN_WIDTH, lo.containerHeight) - 20;
 			lo.containerWidth = stage.width - constants.PUBLISHER_COLUMN_WIDTH - 20;
 			lo.containerTop = topPadding;
 			lo.containerLeft = $(ele.publisherContainer).width() + 10;
