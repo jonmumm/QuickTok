@@ -1,17 +1,26 @@
 # Client-side Code
 window.qtok = {}
 
-$(document).ready =>
+$(document).ready =>  
+  qtok.hash = SS.shared.hash.create()
+  $("#link-input").val(document.location.href + qtok.hash) 
+  
+  $("#link-input").click ->
+    $("#link-input").select();
+  
+  $("#copy-button").zclip(
+    path: '/assets/ZeroClipboard.swf'
+    copy: $("#link-input").val()
+    afterCopy: =>
+      $("#copy-button").text "Copied"
+  )
   
   $("#copy-join-button").zclip(
     path: '/assets/ZeroClipboard.swf'
-    copy: 'asdfasdfasdfas'
+    copy: $("#link-input").val()
+    afterCopy: =>
+      console.log 'hi'
   )
-  
-  
-  
-  qtok.hash = SS.shared.hash.create()
-  $("#link-input").val(document.location.href + qtok.hash)
 
 # This method is called automatically when the websocket connection is established. Do not rename/delete
 exports.init = ->
