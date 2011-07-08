@@ -23,21 +23,39 @@ function log(str) {
 
 
 
-var LayoutContainer = function() {
-	var Width;
-	var Height;
-	var containerId;	
-	
-	return {
-		init: function(cid, width, height){
-			containerId = cid;
-			Width = width;
-			Height = height;
-		},
-		layout: function(){
-			var subscriberBox = document.getElementById(containerId);
-			var vid_ratio = 198/264;
 
+
+// main app
+var EmbedApp = function(data) {
+	var that = {};
+	
+	var constants = {};
+	constants.PUBLISHER_COLUMN_WIDTH = 300;
+	
+	var otdata = {};
+	otdata.sid = data.sessionId;
+	otdata.token = data.token;
+	otdata.apikey = data.apiKey;
+	
+	var stage = {};  // display area
+	var ele = {};  // view elements
+	var session;  // opentok session
+	
+	var publisher;
+	
+	
+	
+	
+	var layoutManager = function() {
+		var that = {};
+		
+		
+		var adamLayout = function(loinfo) {
+			var subscriberBox = ele.subscriberBox;
+			var Width = loinfo.containerWidth;
+			var Height = loinfo.containerHeight;
+			var padding = 20;
+			var vid_ratio = 198 / 264;
 			// Find ideal ratio
 			var count = subscriberBox.children.length;
 			var min_diff;
@@ -55,9 +73,7 @@ var LayoutContainer = function() {
 					targetRows = rows;
 				}
 			};
-
 			var videos_ratio = (targetRows/targetCols) * vid_ratio;
-
 			if (videos_ratio > availableRatio) {
 				targetHeight = Math.floor( Height/targetRows );
 				targetWidth = Math.floor( targetHeight/vid_ratio );
@@ -72,7 +88,7 @@ var LayoutContainer = function() {
 
 			var firstRowMarginTop = ((Height - (targetRows * targetHeight)) / 2);
 			var firstColMarginLeft = ((Width - (targetCols * targetWidth)) / 2);
-			
+
 			var x = 0;
 			var y = 0;
 			for (i=0; i < subscriberBox.children.length; i++) {
@@ -84,51 +100,63 @@ var LayoutContainer = function() {
 				} else {
 					x += targetWidth;
 				}
-				
+
 				var parent = subscriberBox.children[i];
 				var child = subscriberBox.children[i].firstChild;
+				parent.style.position = "absolute";
 				parent.style.left = x + "px";
 				parent.style.top = y + "px";
 
 				child.width = targetWidth;
 				child.height = targetHeight;
-				
+
 				parent.style.width = targetWidth + "px";
 				parent.style.height = targetHeight + "px";
 			};
-		},
-		createSubContainer: function(id, connection) {
+		};
+		
+		
+		that.createSubContainer = function(id, connection) {
 			var container = document.createElement("div");
 			var div = document.createElement("div");
 			div.setAttribute("id", id);
 			container.appendChild(div);
-			var subscriberBox = document.getElementById("subscriberBox");
-			subscriberBox.appendChild(container);
-		},
-		removeSubContainer: function(subContainer) {
+			ele.subscriberBox.appendChild(container);
+		};
+		that.removeSubContainer = function(subContainer) {
 			subContainer.parentNode.removeChild(subContainer);
+		};
+		
+		that.layout = function() {
+			// get window viewport dimensions
+			stage.width = jQuery(window).width();
+			stage.height = jQuery(window).height() - $(ele.headerWrapper).height();
+			// calcs
+			var lo = {};
+			lo.containerWidth = stage.width - constants.PUBLISHER_COLUMN_WIDTH;
+			lo.containerHeight = stage.height;
+			lo.containerTop = $(ele.headerWrapper).height();
+			lo.containerLeft = $(ele.publisherContainer).width();
+			// subscriber container
+			ele.subscriberBox.style.width = lo.containerWidth.toString() + "px";
+			ele.subscriberBox.style.height = lo.containerHeight.toString() + "px";
+			ele.subscriberBox.style.top = lo.containerTop.toString() + "px";
+			ele.subscriberBox.style.left = lo.containerLeft.toString() + "px";
+			
+			adamLayout( lo );
 		}
-	};
-}();
-
-
-
-
-
-// main app
-var EmbedApp = function(data) {
-	var that = {};
+		
+		window.onresize = function(e){
+			that.layout();
+		};
+		
+		that.init = function() {
+			that.layout();
+		};
+		
+		return that;
+	}();
 	
-	var otdata = {};
-	otdata.sid = data.sessionId;
-	otdata.token = data.token;
-	otdata.apikey = data.apiKey;
-	
-	var stage = {};  // display area
-	var ele = {};  // view elements
-	var session;  // opentok session
-	
-	var publisher;
 	
 	
 	
@@ -137,6 +165,7 @@ var EmbedApp = function(data) {
 	function sessionConnectedHandler (event) {
 		log('connected');
 		subscribeToStreams(event.streams);
+		publish();
 	}
 	
 	function connectionCreatedHandler(event) {
@@ -151,13 +180,21 @@ var EmbedApp = function(data) {
 	function publish() {
 		var div = document.createElement("div");
 		div.setAttribute("id", "publisher");
+		ele.publisherContainer.appendChild(div);
 		
-		publisher = session.publish("publisher", {width:50, height:50, name: ""});
+		publisher = session.publish("publisher", {width:200, height:200, name: ""});
 		publisher.addEventListener("echoCancellationModeChanged", onEchoCancellationModeChangedHandler);
 		publisher.addEventListener("accessDenied", onAccessDenied);
 	}
 	
+	function unpublish() {
+		if (session) {
+			session.unpublish( publisher );
+		}
+	}
+	
 	function onAccessDenied (event) {
+		unpublish();
 	}
 	
 	function onEchoCancellationModeChangedHandler (event) {
@@ -177,14 +214,15 @@ var EmbedApp = function(data) {
 	}
 	
 	function removeSubscriber(subscriber) {
+		var subContainer = document.getElementById(subscriber.id).parentNode;
 		session.unsubscribe(subscriber);
-		LayoutContainer.removeSubContainer(subContainer);
+		layoutManager.removeSubContainer(subContainer);
 	}
 	
 
 	
 	function numStreamsChanged (nstreams) {
-		LayoutContainer.layout();
+		layoutManager.layout();
 	}
 	
 	function streamDestroyedHandler (event) {
@@ -204,7 +242,7 @@ var EmbedApp = function(data) {
 			var stream = streams[i];
 			if (stream.connection.connectionId != session.connection.connectionId) {
 				var divId = "subscriber_" + stream.streamId;
-				LayoutContainer.createSubContainer(divId, stream.connection);
+				layoutManager.createSubContainer(divId, stream.connection);
 				session.subscribe(stream, divId, {subscribeToAudio: true});
 			}
 		}
@@ -224,27 +262,26 @@ var EmbedApp = function(data) {
 		session.addEventListener("signalReceived", signalReceivedHandler);
 		session.addEventListener("connectionCreated", connectionCreatedHandler);
 		session.addEventListener("connectionDestroyed", connectedDestroyedHandler);
+		
+		session.connect(otdata.apikey, otdata.token);
 	}
 	
 	that.init = function(){
-		// get window viewport dimensions
-		stage.width = jQuery(window).width();
-		stage.height = jQuery(window).height();
 		// swf elements
+		ele.headerWrapper = document.getElementById("header-wrapper");
+		ele.chat = document.getElementById("chat");
 		ele.subscriberBox = document.getElementById("subscriberBox");
 		ele.publisherContainer = document.getElementById("publisherContainer");
 		
-		// init layout
-		LayoutContainer.init("subscriberBox", stage.width, stage.height);
+		
+
+		// LayoutContainer.init("subscriberBox", stage.width - constants.PUBLISHER_COLUMN_WIDTH, stage.height);
+		layoutManager.init();
 		
 		initSession()
 	};
 
-	that.unpublish = function() {
-		if (session) {
-			session.unpublish( publisher );
-		}
-	};
+
 	
 	return that;
 };
