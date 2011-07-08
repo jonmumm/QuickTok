@@ -18,6 +18,7 @@ exports.actions =
       params = 
         sessionId: data
         token: SS.server.opentok.token()
+        apiKey: SS.shared.constants.apiKey
       
       cb params
 
